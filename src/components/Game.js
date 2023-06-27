@@ -14,8 +14,6 @@ var wordStack = [];
 
 var turn = "Player";
 
-let silence = false;
-
 let isPlayWord = false;
 let typeGrant = true;
 
@@ -31,78 +29,83 @@ const activeAudio = (sfxName) => {
 };
 
 function Game() {
-  let Chg = document.getElementById("Changed");
+  const [data] = useState(Data);
+  const [playerScore, changePS] = useState("00000");
+  const [aiScore, changePSI] = useState("00000");
+  const [usedTime, changeUsedTime] = useState(0);
+  const [syllable, syllableChange] = useState("대기 중입니다.");
 
-  useEffect(() => {
-    if (Chg === 1) {
-      activeAudio("Start");
-      selected();
-
-      document.getElementById("type").style.display = "none";
-
-      setTimeout(() => {
-        activeAudio("BGM");
-        document.getElementById("type").style.display = "";
-        document.getElementById("type").focus();
-        timeProgress();
-      }, 3000);
-    }
-  }, [Chg]);
+  var Changed;
 
   window.onbeforeunload = function (e) {
     return 0;
   };
 
   document.addEventListener("paste", function (event) {
-    alert(silence);
     event.preventDefault();
   });
 
-  const [data] = useState(Data);
-  const [playerScore, changePS] = useState("00000");
-  const [aiScore, changePSI] = useState("00000");
-  const [usedTime, changeUsedTime] = useState(0);
+  useEffect(() => {
+    Changed = document.getElementById("Changed");
 
-  const [syllable, syllableChange] = useState(
-    "데이터베이스가 구성되면 1을 눌러 주세여!"
-  );
+    alert(Changed.innerHTML);
+
+    pro();
+  }, [Changed]);
+
+  async function pro() {
+    while (Changed.innerHTML === "0") await timer(100);
+    Changed.innerHTML = "0";
+    activeAudio("Start");
+    selected();
+
+    document.getElementById("type").style.display = "none";
+
+    setTimeout(() => {
+      activeAudio("BGM");
+      document.getElementById("type").style.display = "";
+      document.getElementById("type").focus();
+      timeProgress();
+    }, 3000);
+  }
 
   const showWrongDisplay = (typeOfWrong, wroteType) => {
     typeGrant = false;
 
+    const text = document.getElementById("text");
+
     setTimeout(() => {
-      document.getElementById("text").style.color = "white";
-      document.getElementById("text").style.textDecoration = "none";
+      text.style.color = "white";
+      text.style.textDecoration = "none";
 
       if (typeOfWrong === "used")
-        document.getElementById("text").innerHTML =
-          "이미 쓰인 단어: " + wroteType;
-      else document.getElementById("text").innerHTML = wroteType;
+        text.innerHTML = "이미 쓰인 단어: " + wroteType;
+      else text.innerHTML = wroteType;
 
-      document.getElementById("text").style.color = "red";
-      document.getElementById("text").style.textDecoration = "line-through";
+      text.style.color = "red";
+      text.style.textDecoration = "line-through";
     }, 0);
 
     setTimeout(() => {
-      document.getElementById("text").style.color = "red";
-      document.getElementById("text").style.textDecoration = "none";
+      text.style.color = "red";
+      text.style.textDecoration = "none";
     }, 1000);
 
     setTimeout(() => {
-      document.getElementById("text").style.color = "red";
-      document.getElementById("text").style.textDecoration = "line-through";
+      text.style.color = "red";
+      text.style.textDecoration = "line-through";
     }, 1500);
 
     setTimeout(() => {
-      document.getElementById("text").style.color = "red";
-      document.getElementById("text").style.textDecoration = "none";
+      text.style.color = "red";
+      text.style.textDecoration = "none";
     }, 2000);
 
     setTimeout(() => {
       typeGrant = true;
-      document.getElementById("text").style.color = "white";
-      document.getElementById("text").style.textDecoration = "none";
-      document.getElementById("text").innerHTML = syllable;
+      text.style.color = "white";
+      text.style.textDecoration = "none";
+      text.innerHTML = syllable;
     }, 2500);
   };
 

@@ -24,7 +24,6 @@ function Firebase() {
 
   useEffect(() => {
     const fetchData = async () => {
-      alert("데이터베이스를 구성하고 있습니다...");
       const snapshot = await database.ref().once("value");
       const value = snapshot.val();
       let word = [{ word: value }];
