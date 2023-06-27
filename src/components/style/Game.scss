@@ -1,0 +1,155 @@
+$primary-color: rgb(104, 104, 104);
+$secondary-color: rgb(255, 255, 255);
+$accent-color: rgb(255, 63, 156);
+$light-accent-color: rgb(255, 116, 183);
+$lighter-accent-color: rgb(255, 213, 232);
+$placeholder-color: rgb(211, 138, 181);
+$text-color: rgb(134, 70, 109);
+$player-color: rgb(255, 153, 202);
+
+$section-width: 95%;
+$section-height: 85%;
+$section-top: 105px;
+$game-width: 100%;
+$game-height: 100%;
+$word-width: 80%;
+$word-height: 20%;
+$word-top: 180px;
+$typing-top: calc(#{$word-top} + #{$word-height} + 20px);
+$typing-height: 10%;
+$player-width: 230px;
+$player-height: 260px;
+$playerspace-top: calc(#{$typing-top} + 10% + 20px);
+
+#Changed {
+  display: none;
+}
+
+.Section {
+  position: fixed;
+  width: $section-width;
+  height: $section-height;
+  top: $section-top;
+  background-color: $primary-color;
+  border: 6px solid $secondary-color;
+  border-radius: 20px;
+
+  .Game {
+    width: $game-width;
+    height: $game-height;
+    display: flex;
+    justify-content: center;
+
+    .word {
+      position: fixed;
+      background-color: $accent-color;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: rgba(0, 0, 0, 0.5) 7px 7px 10px inset;
+      width: $word-width;
+      height: $word-height;
+      top: $word-top;
+      border: 4px solid $secondary-color;
+      border-radius: 20px;
+      margin-bottom: 20px;
+
+      .text {
+        color: $secondary-color;
+        font-size: 50px;
+      }
+
+      .InTimebar,
+      .Timebar {
+        position: absolute;
+        box-shadow: rgba(0, 0, 0, 0.5) 7px 7px 10px inset;
+        width: 94%;
+        height: 10%;
+        bottom: 3%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 4px solid $secondary-color;
+        border-radius: 20px;
+      }
+
+      .InTimebar {
+        background-color: $light-accent-color;
+      }
+
+      .Timebar {
+        background-color: $lighter-accent-color;
+      }
+    }
+
+    .typing {
+      position: fixed;
+      background-color: $lighter-accent-color;
+      width: $word-width;
+      height: $typing-height;
+      text-indent: 10pt;
+      top: $typing-top;
+
+      &::placeholder {
+        color: $placeholder-color;
+      }
+
+      color: $text-color;
+      font-size: 33px;
+      border: 4px solid $secondary-color;
+      border-radius: 20px;
+    }
+
+    .playerspace {
+      position: fixed;
+      top: $playerspace-top;
+      width: $word-width;
+      height: 20%;
+
+      .player {
+        position: fixed;
+        background-color: $player-color;
+        width: $player-width;
+        height: $player-height;
+        color: $secondary-color;
+        font-size: 25px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin-top: 10px;
+        border: 4px solid $secondary-color;
+        border-radius: 20px;
+        padding-bottom: 12px;
+
+        .image {
+          position: absolute;
+          top: 35px;
+          width: 50%;
+        }
+
+        .score {
+          font-size: 35pt;
+        }
+
+        .trueScore {
+          font-size: 0px;
+        }
+
+        .name {
+          font-family: sans-serif;
+          font-size: 23pt;
+        }
+      }
+
+      .me {
+        display: flex;
+      }
+
+      .ai {
+        display: flex;
+        margin-left: 250px;
+      }
+    }
+  }
+}
