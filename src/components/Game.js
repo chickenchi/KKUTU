@@ -106,7 +106,8 @@ function Game() {
       typeGrant = true;
       text.style.color = "white";
       text.style.textDecoration = "none";
-      text.innerHTML = syllable;
+      if (typeOfWrong === "aiNoMatchWord") text.innerHTML = wroteType.charAt(0);
+      else text.innerHTML = syllable;
     }, 2500);
   };
 
@@ -152,7 +153,7 @@ function Game() {
       setWord = useStack[0];
     } catch (err) {
       activeAudio("Wrong");
-      showWrongDisplay("noMatchWord", front + "... T.T");
+      showWrongDisplay("aiNoMatchWord", front + "... T.T");
       return;
     }
 
@@ -252,7 +253,7 @@ function Game() {
     let aiSc = document.getElementById("aiScore").innerHTML;
 
     if (turn === "Player") {
-      let playerSC = parseInt(pSc) - 100;
+      let playerSC = parseInt(pSc) - (20 + 6 * wordStack.length);
 
       if (playerSC < 0) playerSC = "00000";
       else playerSC += "";
