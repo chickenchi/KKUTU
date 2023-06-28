@@ -5,6 +5,7 @@ import Audio from "../Audio";
 import Audio2 from "../Audio2";
 import Audio3 from "../Audio3";
 import Audio4 from "../Audio4";
+import Audio5 from "../Audio5";
 import BGM from "../AudioBGM";
 import AudioStart from "../AudioStart";
 import { getWordData } from "./wordData";
@@ -21,7 +22,8 @@ const activeAudio = (sfxName) => {
   const SFX = document.getElementById(sfxName);
   SFX.pause();
   SFX.currentTime = 0;
-  SFX.volume = 0.5;
+  if (sfxName === "BGM") SFX.volume = 0.1;
+  else SFX.volume = 0.5;
   var playPromise = SFX.play();
   if (playPromise !== undefined) {
     playPromise.then((_) => {}).catch((error) => {});
@@ -46,9 +48,8 @@ function Game() {
   });
 
   useEffect(() => {
+    document.getElementById("type").style.display = "none";
     Changed = document.getElementById("Changed");
-
-    alert(Changed.innerHTML);
 
     pro();
   }, [Changed]);
@@ -117,34 +118,38 @@ function Game() {
 
   const aiStart = (front) => {
     let setWord = "";
-    let compareData = "";
+    let insertData = "";
     let text = document.getElementById("text");
     let i = 0;
-    let pointing = 0;
+    let useStack = [];
 
     console.log();
 
     try {
-      do {
-        for (i = 0; i < arr[0]["word"].length; i++) {
-          arr = getWordData();
+      for (i = 0; i < arr[0]["word"].length; i++) {
+        arr = getWordData();
 
-          compareData = arr[0]["word"][i]["에콜드파리"];
+        insertData = arr[0]["word"][i]["에콜드파리"];
 
-          if (
-            compareData.charAt(0) === front &&
-            compareData.length >= 2 &&
-            wordStack.indexOf(compareData) === -1
-          ) {
-            if (getRandom(10) === 5) {
-              setWord = compareData;
-              pointing = 0;
-              break;
-            } else pointing = 1;
-          }
+        if (
+          insertData.charAt(0) === front &&
+          insertData.length >= 2 &&
+          wordStack.indexOf(insertData) === -1
+        ) {
+          useStack.push(insertData);
         }
-        if (pointing === 0 && setWord === "") throw "noWord";
-      } while (pointing === 1);
+      }
+      if (useStack.length === 0) throw "noWord";
+
+      useStack.sort(function (a, b) {
+        return b.length - a.length;
+      });
+
+      for (let i = 0; i < useStack.length; i++) {
+        console.log(useStack);
+      }
+
+      setWord = useStack[0];
     } catch (err) {
       activeAudio("Wrong");
       showWrongDisplay("noMatchWord", front + "... T.T");
@@ -285,23 +290,27 @@ function Game() {
       await timer(41);
     }
 
-    wordStack.length = 0;
-
-    isPlayWord = false;
-
-    changeUsedTime(tpbWidth);
+    activeAudio("Died");
 
     minusScore();
 
-    exist = false;
-
-    selected();
-
-    document.getElementById("BGM").pause();
-
-    activeAudio("Start");
-
     document.getElementById("type").style.display = "none";
+
+    setTimeout(() => {
+      wordStack.length = 0;
+
+      isPlayWord = false;
+
+      changeUsedTime(tpbWidth);
+
+      exist = false;
+
+      selected();
+
+      document.getElementById("BGM").pause();
+
+      activeAudio("Start");
+    }, 3000);
 
     setTimeout(() => {
       activeAudio("BGM");
@@ -311,7 +320,7 @@ function Game() {
       } else aiStart(text);
 
       timeProgress();
-    }, 3000);
+    }, 6000);
   }
 
   const showWord = (
@@ -554,6 +563,7 @@ function Game() {
         <Audio2 />
         <Audio3 />
         <Audio4 />
+        <Audio5 />
         <AudioStart />
         <BGM />
       </div>
