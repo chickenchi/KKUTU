@@ -1,15 +1,16 @@
 import "./style/Lobby.scss";
+import Section from "./Section";
 
 function startGame() {
   window.location = "./Game";
 }
 
 function Lobby() {
+  const room = [];
+
   return (
     <div className="Lobby">
-      <button className="StartBtn" onClick={startGame}>
-        게임 시작
-      </button>
+      <div>{room}1</div>
     </div>
   );
 }
