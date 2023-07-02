@@ -6,7 +6,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <BrowserRouter basename="/lobby">
+    <BrowserRouter basename="/KKUTU">
       <Header />
       <Routes>
         <Route path="/Game" element={<Section />}></Route>
