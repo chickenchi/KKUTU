@@ -1,22 +1,24 @@
 {
   "files": {
-    "main.css": "/KKUTU/static/css/main.0d63e9f4.css",
-    "main.js": "/KKUTU/static/js/main.70f5c7a6.js",
+    "main.css": "/KKUTU/static/css/main.f8bd3862.css",
+    "main.js": "/KKUTU/static/js/main.d6497ee2.js",
     "static/js/787.d1d4a2c2.chunk.js": "/KKUTU/static/js/787.d1d4a2c2.chunk.js",
     "static/media/Game.mp3": "/KKUTU/static/media/Game.2fb2da9013ff295786a5.mp3",
     "static/media/Start.mp3": "/KKUTU/static/media/Start.bf6930adcc6f84f47c21.mp3",
     "static/media/Died.mp3": "/KKUTU/static/media/Died.f5a6eb528f79cf7887b6.mp3",
     "static/media/KungKung.mp3": "/KKUTU/static/media/KungKung.617035b5d1da25435a73.mp3",
+    "static/media/Mission.mp3": "/KKUTU/static/media/Mission.ee5226ac472e9a3aa856.mp3",
     "static/media/TypeSound.mp3": "/KKUTU/static/media/TypeSound.f3d8d568566d34882f17.mp3",
     "static/media/TypeSoundPower.mp3": "/KKUTU/static/media/TypeSoundPower.918a525ea5c6348a135e.mp3",
     "static/media/Wrong.mp3": "/KKUTU/static/media/Wrong.4cf918e591eb40c23088.mp3",
+    "static/media/kkutu_bot.png": "/KKUTU/static/media/kkutu_bot.10aa5ae4dc1c8ce38dfd.png",
     "index.html": "/KKUTU/index.html",
-    "main.0d63e9f4.css.map": "/KKUTU/static/css/main.0d63e9f4.css.map",
-    "main.70f5c7a6.js.map": "/KKUTU/static/js/main.70f5c7a6.js.map",
+    "main.f8bd3862.css.map": "/KKUTU/static/css/main.f8bd3862.css.map",
+    "main.d6497ee2.js.map": "/KKUTU/static/js/main.d6497ee2.js.map",
     "787.d1d4a2c2.chunk.js.map": "/KKUTU/static/js/787.d1d4a2c2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0d63e9f4.css",
-    "static/js/main.70f5c7a6.js"
+    "static/css/main.f8bd3862.css",
+    "static/js/main.d6497ee2.js"
   ]
 }
