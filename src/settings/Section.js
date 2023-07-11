@@ -1,4 +1,3 @@
-import { Routes, Route } from "react-router-dom";
 import Game from "../components/Game";
 
 function Section() {

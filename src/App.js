@@ -9,8 +9,8 @@ function App() {
     <BrowserRouter basename="/KKUTU">
       <Header />
       <Routes>
-        <Route path="/Game" element={<Section />}></Route>
-        <Route path="/" element={<Lobby />}></Route>
+        <Route path="/" element={<Section />}></Route>
+        <Route path="/Game" element={<Lobby />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
