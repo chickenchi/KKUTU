@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/KKUTU/static/css/main.f8bd3862.css",
-    "main.js": "/KKUTU/static/js/main.db5ae3ee.js",
+    "main.css": "/KKUTU/static/css/main.d88b61cf.css",
+    "main.js": "/KKUTU/static/js/main.734279d0.js",
     "static/js/787.d1d4a2c2.chunk.js": "/KKUTU/static/js/787.d1d4a2c2.chunk.js",
     "static/media/Game.mp3": "/KKUTU/static/media/Game.2fb2da9013ff295786a5.mp3",
     "static/media/Start.mp3": "/KKUTU/static/media/Start.bf6930adcc6f84f47c21.mp3",
@@ -13,12 +13,12 @@
     "static/media/Wrong.mp3": "/KKUTU/static/media/Wrong.4cf918e591eb40c23088.mp3",
     "static/media/kkutu_bot.png": "/KKUTU/static/media/kkutu_bot.10aa5ae4dc1c8ce38dfd.png",
     "index.html": "/KKUTU/index.html",
-    "main.f8bd3862.css.map": "/KKUTU/static/css/main.f8bd3862.css.map",
-    "main.db5ae3ee.js.map": "/KKUTU/static/js/main.db5ae3ee.js.map",
+    "main.d88b61cf.css.map": "/KKUTU/static/css/main.d88b61cf.css.map",
+    "main.734279d0.js.map": "/KKUTU/static/js/main.734279d0.js.map",
     "787.d1d4a2c2.chunk.js.map": "/KKUTU/static/js/787.d1d4a2c2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f8bd3862.css",
-    "static/js/main.db5ae3ee.js"
+    "static/css/main.d88b61cf.css",
+    "static/js/main.734279d0.js"
   ]
 }
