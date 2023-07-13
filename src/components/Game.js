@@ -22,7 +22,7 @@ let isPlayWord = false;
 let typeGrant = true;
 
 let round = 6;
-let currentRound = 4; // 기본값: 0
+let currentRound = 0; // 기본값: 0
 let roundChecked = false;
 let rankChecked = false;
 let userCount = 2; // 멀티로 만들 거면 이렇게 하면 안 됨
@@ -462,7 +462,7 @@ function Game() {
 
   async function timeProgress() {
     let timeProgressBar = document.getElementById("timebar");
-    let tpbWidth = 24; //
+    let tpbWidth = 98; //
 
     timeProgressBar.style.width = tpbWidth + "%";
 

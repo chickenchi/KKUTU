@@ -6,11 +6,11 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <BrowserRouter basename="/KKUTU">
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header />
       <Routes>
-        <Route path="/Game" element={<Section />}></Route>
-        <Route path="/" element={<Lobby />}></Route>
+        <Route path="/Game" element={<Lobby />}></Route>
+        <Route path="/" element={<Section />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
