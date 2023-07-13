@@ -1,7 +1,7 @@
 import "./style/Lobby.scss";
 
 function startGame() {
-  window.location = "./Game";
+  window.location = "../KKUTU/Game";
 }
 
 function Lobby() {

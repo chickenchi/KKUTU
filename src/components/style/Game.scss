@@ -16,6 +16,8 @@ $game-height: 100%;
 $word-width: 70%;
 $word-height: 20%;
 $word-top: 80px;
+$round-top: calc(#{$word-top} - 40px);
+$round-left: 220px;
 $typing-top: calc(#{$word-top} + #{$word-height} + 110px);
 $typing-height: 10%;
 $player-width: 230px;
@@ -40,6 +42,20 @@ $playerspace-top: calc(#{$typing-top} + 10% + 20px);
     height: $game-height;
     display: flex;
     justify-content: center;
+
+    .round {
+      position: absolute;
+      display: flex;
+
+      border-radius: 5px;
+
+      top: $round-top;
+      left: 50%;
+      margin-left: calc(300px / -3);
+
+      width: 300px;
+      height: 20px;
+    }
 
     .mission {
       position: relative;
@@ -184,6 +200,146 @@ $playerspace-top: calc(#{$typing-top} + 10% + 20px);
         display: flex;
         margin-left: 250px;
       }
+    }
+  }
+
+  .resultScreen {
+    position: absolute;
+    background-color: rgb(255, 102, 168);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    width: 500px;
+    height: 80%;
+
+    box-shadow: rgba(0, 0, 0, 0.1) 5px 5px 4px;
+
+    margin-top: 50px;
+    border-radius: 20px;
+    border: 3px solid rgb(255, 255, 255);
+
+    .title {
+      position: absolute;
+      background-color: rgb(255, 53, 141);
+
+      top: 0;
+
+      display: flex;
+      align-items: center;
+
+      margin-top: 20px;
+
+      border-radius: 20px;
+
+      box-shadow: rgba(0, 0, 0, 0.5) 3px 3px 2px;
+
+      border: 2px solid rgb(255, 255, 255);
+
+      width: 90%;
+      height: 10%;
+
+      .title-text {
+        font-size: 20pt;
+        color: white;
+        margin-left: 10px;
+      }
+    }
+
+    .note {
+      position: absolute;
+      background-color: rgba(255, 53, 141, 0);
+
+      top: 0;
+
+      display: flex;
+      align-items: center;
+
+      margin-top: 100px;
+
+      border-radius: 20px;
+
+      border: 2px solid rgb(255, 255, 255);
+
+      width: 50%;
+      height: 5%;
+
+      color: white;
+
+      .rank {
+        margin-left: 18px;
+        margin-right: 52px;
+      }
+
+      .player {
+        margin-right: 64px;
+      }
+    }
+
+    .list {
+      position: absolute;
+
+      margin-top: 130px;
+
+      display: flex;
+      flex-direction: column;
+
+      width: 100px;
+
+      top: 20px;
+      left: 30px;
+
+      .Listing {
+        margin-bottom: 60px;
+
+        @for $num from 1 through 8 {
+          #rank-#{$num} {
+            position: absolute;
+            color: white;
+            font-size: 25pt;
+            margin-left: 110px;
+            display: inline;
+          }
+
+          #name-#{$num} {
+            position: absolute;
+            color: white;
+            font-size: 20pt;
+            margin-left: 194px;
+            margin-top: 3px;
+            display: inline;
+          }
+
+          #score-#{$num} {
+            position: absolute;
+            color: white;
+            font-size: 17pt;
+            margin-left: 291px;
+            margin-top: 7px;
+            display: inline;
+          }
+        }
+      }
+    }
+
+    .quit-button {
+      position: absolute;
+      background-color: rgb(255, 178, 211);
+
+      bottom: 0;
+
+      margin-bottom: 20px;
+
+      border-radius: 20px;
+      border: 2px solid white;
+
+      width: 200px;
+      height: 40px;
+
+      color: black;
+
+      font-size: 14pt;
     }
   }
 }

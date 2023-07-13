@@ -17,8 +17,32 @@ var wordStack = [];
 
 var turn = "Player";
 
+let isAvailable = false;
 let isPlayWord = false;
 let typeGrant = true;
+
+let round = 6;
+let currentRound = 4; // 기본값: 0
+let roundChecked = false;
+let rankChecked = false;
+let userCount = 2; // 멀티로 만들 거면 이렇게 하면 안 됨
+
+const Lobby = () => {
+  window.location = "/KKUTU";
+};
+
+const showRound = () => {
+  if (roundChecked) return;
+  roundChecked = false;
+
+  let shRound = [];
+
+  for (var i = 1; i <= round; i++) {
+    let p = "round-ico " + i;
+    shRound.push(<div id={p}>{i}</div>);
+  }
+  return shRound;
+};
 
 const activeAudio = (sfxName) => {
   const SFX = document.getElementById(sfxName);
@@ -30,6 +54,11 @@ const activeAudio = (sfxName) => {
   if (playPromise !== undefined) {
     playPromise.then((_) => {}).catch((error) => {});
   }
+};
+
+const offAudio = (sfxName) => {
+  const SFX = document.getElementById(sfxName);
+  SFX.pause();
 };
 
 function getDoumChar(lastChar) {
@@ -76,6 +105,7 @@ function Game() {
   const [usedTime, changeUsedTime] = useState(0);
   const [syllable, syllableChange] = useState("대기 중입니다.");
   const [mText, mtChange] = useState("가");
+  const [gameOver, gO] = useState(false);
 
   var Changed;
 
@@ -87,10 +117,96 @@ function Game() {
     event.preventDefault();
   });
 
+  const resultScreen = () => {
+    syllableChange("게임 끝!");
+    document.getElementById("type").style.display = "none";
+    offAudio("BGM");
+
+    setTimeout(() => {
+      document.getElementById("resultScreen").style.display = "flex";
+    }, 2000);
+  };
+
+  const nextRound = () => {
+    currentRound++;
+
+    if (round < currentRound) {
+      resultScreen();
+      return true;
+    }
+
+    for (var i = 1; i <= round; i++) {
+      document.getElementById("round-ico " + i).style.backgroundColor =
+        "rgb(255, 172, 233)";
+    }
+    let mainCol = document.getElementById("round-ico " + currentRound);
+
+    mainCol.style.backgroundColor = "rgb(255, 77, 181)";
+
+    return false;
+  };
+
+  const moveContainer = (e) => {
+    const resScr = document.getElementById("resultScreen");
+
+    let shiftX = e.clientX - resScr.getBoundingClientRect().left + 6;
+    let shiftY = e.clientY - resScr.getBoundingClientRect().top + 161;
+
+    e.target.style.position = "absolute";
+    e.target.style.zIndex = 1000;
+
+    moveAt(e.pageX, e.pageY);
+
+    function moveAt(pageX, pageY) {
+      resScr.style.left = pageX - shiftX + "px";
+      resScr.style.top = pageY - shiftY + "px";
+    }
+
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+
+      e.target.hidden = true;
+      let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+      e.target.hidden = false;
+
+      if (!elemBelow) return;
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+
+    resScr.onmouseup = function () {
+      document.removeEventListener("mousemove", onMouseMove);
+      resScr.onmouseup = null;
+    };
+  };
+
   useEffect(() => {
     document.getElementById("type").style.display = "none";
     Changed = document.getElementById("Changed");
     randMission();
+
+    const resScr = document.getElementById("resultScreen");
+
+    //resScr.addEventListener("mousedown", moveContainer);
+
+    resScr.ondragstart = function () {
+      return false;
+    };
+
+    for (var i = 1; i <= round; i++) {
+      document.getElementById("round-ico " + i).style.marginLeft = "7px";
+      document.getElementById("round-ico " + i).style.borderRadius = "30px";
+      document.getElementById("round-ico " + i).style.backgroundColor =
+        "rgb(255, 172, 233)";
+      document.getElementById("round-ico " + i).style.width = "45px";
+      document.getElementById("round-ico " + i).style.height = "30px";
+      document.getElementById("round-ico " + i).style.fontSize = "14pt";
+      document.getElementById("round-ico " + i).style.display = "flex";
+      document.getElementById("round-ico " + i).style.alignItems = "center";
+      document.getElementById("round-ico " + i).style.justifyContent = "center";
+      document.getElementById("round-ico " + i).style.border =
+        "2px solid white";
+    }
 
     pro();
   }, [Changed]);
@@ -99,13 +215,16 @@ function Game() {
     while (Changed.innerHTML === "0") await timer(100);
     Changed.innerHTML = "0";
     activeAudio("Start");
+
+    nextRound();
+
     selected();
 
-    document.getElementById("type").style.display = "none";
+    document.getElementById("type").style.display = "";
 
     setTimeout(() => {
+      isAvailable = true;
       activeAudio("BGM");
-      document.getElementById("type").style.display = "";
       document.getElementById("type").focus();
       timeProgress();
     }, 3000);
@@ -182,7 +301,7 @@ function Game() {
       for (i = 0; i < arr[0]["word"].length; i++) {
         arr = getWordData();
 
-        insertData = arr[0]["word"][i]["에콜드파리"];
+        insertData = arr[0]["word"][i]["거울에비친빛의신좌"];
 
         if (
           (insertData.charAt(0) === front ||
@@ -282,7 +401,7 @@ function Game() {
       try {
         for (i; ; i++) {
           arr = getWordData();
-          let compareData = arr[0]["word"][i]["에콜드파리"];
+          let compareData = arr[0]["word"][i]["거울에비친빛의신좌"];
 
           if (
             compareData.charAt(0) === sel.charAt(0) &&
@@ -309,9 +428,15 @@ function Game() {
   const minusScore = () => {
     let pSc = document.getElementById("playerScore").innerHTML;
     let aiSc = document.getElementById("aiScore").innerHTML;
+    let minusPoint = 0;
+    let useRate = 0;
+
+    for (let i = 0; i < wordStack.length; i++) useRate += wordStack[i].length;
+
+    minusPoint = 200 + 16 * wordStack.length + useRate;
 
     if (turn === "Player") {
-      let playerSC = parseInt(pSc) - (20 + 6 * wordStack.length);
+      let playerSC = parseInt(pSc) - minusPoint;
 
       if (playerSC < 0) playerSC = "00000";
       else playerSC += "";
@@ -322,7 +447,7 @@ function Game() {
 
       changePS(playerSC);
     } else {
-      let aiSC = parseInt(aiSc) - (20 + 6 * wordStack.length);
+      let aiSC = parseInt(aiSc) - minusPoint;
 
       if (aiSC < 0) aiSC = "00000";
       else aiSC += "";
@@ -337,7 +462,7 @@ function Game() {
 
   async function timeProgress() {
     let timeProgressBar = document.getElementById("timebar");
-    let tpbWidth = 94;
+    let tpbWidth = 24; //
 
     timeProgressBar.style.width = tpbWidth + "%";
 
@@ -350,35 +475,47 @@ function Game() {
 
     activeAudio("Died");
 
+    isAvailable = false;
     minusScore();
 
-    document.getElementById("type").style.display = "none";
-
     setTimeout(() => {
-      wordStack.length = 0;
+      const startCode = () => {
+        setTimeout(() => {
+          isAvailable = true;
 
-      isPlayWord = false;
+          activeAudio("BGM");
+          if (turn === "Player") {
+            document.getElementById("type").focus();
+          } else aiStart();
 
-      changeUsedTime(tpbWidth);
+          timeProgress();
+        }, 3000);
+      };
 
-      exist = false;
+      const readyCode = () => {
+        wordStack.length = 0;
 
-      selected();
+        isPlayWord = false;
 
-      document.getElementById("BGM").pause();
+        changeUsedTime(tpbWidth);
 
-      activeAudio("Start");
+        exist = false;
+
+        selected();
+
+        document.getElementById("BGM").pause();
+
+        activeAudio("Start");
+
+        startCode();
+      };
+
+      let isGameOver = nextRound();
+
+      gO(isGameOver);
+
+      if (!isGameOver) readyCode();
     }, 3000);
-
-    setTimeout(() => {
-      activeAudio("BGM");
-      if (turn === "Player") {
-        document.getElementById("type").style.display = "";
-        document.getElementById("type").focus();
-      } else aiStart();
-
-      timeProgress();
-    }, 6000);
   }
 
   const showWord = (
@@ -395,8 +532,8 @@ function Game() {
   ) => {
     isPlayWord = true;
 
-    document.getElementById("type").style.display = "none";
     let typeLength = turn === "Player" ? type.value.length : type.length;
+    isAvailable = false;
     turn = turn === "Player" ? "AI" : "Player";
 
     for (let i = 0; i <= typeLength; i++) {
@@ -424,8 +561,8 @@ function Game() {
             }, 0);
 
             setTimeout(() => {
+              isAvailable = true;
               if (turn === "Player") {
-                document.getElementById("type").style.display = "";
                 document.getElementById("type").focus();
               } else aiStart();
             }, 10);
@@ -484,8 +621,8 @@ function Game() {
             isPlayWord = false;
 
             setTimeout(() => {
+              isAvailable = true;
               if (turn === "Player") {
-                document.getElementById("type").style.display = "";
                 document.getElementById("type").focus();
               } else aiStart();
             }, 10);
@@ -589,7 +726,13 @@ function Game() {
     let i = 0;
     let compareData = "";
 
-    if (e.key === "Enter" && animated === 0 && typeGrant === true) {
+    if (
+      e.key === "Enter" &&
+      animated === 0 &&
+      typeGrant === true &&
+      turn === "Player" &&
+      isAvailable === true
+    ) {
       if (
         (typeboy.charAt(0) === syllable.charAt(0) ||
           typeboy.charAt(0) === getDoumChar(syllable.charAt(0))) &&
@@ -602,7 +745,7 @@ function Game() {
           if (wordStack.indexOf(typeboy) !== -1) throw "used";
           for (i; ; i++) {
             arr = getWordData();
-            compareData = arr[0]["word"][i]["에콜드파리"];
+            compareData = arr[0]["word"][i]["거울에비친빛의신좌"];
 
             if (compareData === typeboy) break;
           }
@@ -686,6 +829,47 @@ function Game() {
     }
   };
 
+  const showRank = () => {
+    if (roundChecked) return;
+    roundChecked = false;
+
+    let shRank = [];
+    let rankList = ["", "st", "nd", "rd", "th", "th", "th", "th", "th"];
+
+    let userList = ["Player", "AI"];
+    let userScore = [parseInt(playerScore), parseInt(aiScore)];
+    let userRank = [1, 2];
+
+    // ai와 player에 한해 코드 가동 가능
+    if (userScore[0] < userScore[1]) {
+      let chg = userScore[1];
+      userScore[1] = userScore[0];
+      userScore[0] = chg;
+
+      let chgN = userList[1];
+      userList[1] = userList[0];
+      userList[0] = chgN;
+    } else if (userScore[0] === userScore[1]) {
+      userRank[0] = 1;
+      userRank[1] = 1;
+    }
+
+    for (var i = 0; i < userCount; i++) {
+      let rnk = "rank-" + (i + 1);
+      let nme = "name-" + (i + 1);
+      let scr = "score-" + (i + 1);
+
+      shRank.push(
+        <div className="Listing">
+          <div id={rnk}>{userRank[i] + rankList[userRank[i]]}</div>
+          <div id={nme}>{userList[i]}</div>
+          <div id={scr}>{userScore[i]}</div>
+        </div>
+      );
+    }
+    return shRank;
+  };
+
   return (
     <div className="Game">
       <div className="audioWorkspace">
@@ -701,6 +885,7 @@ function Game() {
       <div className="firebaseWorkspace">
         <Firebase />
       </div>
+      <div className="round">{showRound()}</div>
       <div className="mission">
         <p className="mission-text">mission</p>
         <p id="mission" className="mission-a">
@@ -718,7 +903,7 @@ function Game() {
         type="text"
         id="type"
         className="typing"
-        placeholder="당신의 차례입니다! 단어를 입력하세요(붙여넣기 기능을 사용할 수 없습니다)."
+        placeholder="(붙여넣기 기능을 사용할 수 없습니다)"
         onKeyPress={handleOnKeyPress}
       />
       <div className="playerspace">
@@ -740,6 +925,20 @@ function Game() {
             </p>
           </div>
         </div>
+      </div>
+      <div className="resultScreen" id="resultScreen">
+        <div className="title">
+          <span className="title-text">게임 결과📍</span>
+        </div>
+        <div className="note">
+          <span className="rank">랭킹</span>
+          <span className="player">유저</span>
+          <span className="score">점수</span>
+        </div>
+        <div className="list">{gameOver && showRank()}</div>
+        <button className="quit-button" onClick={Lobby}>
+          확인
+        </button>
       </div>
     </div>
   );

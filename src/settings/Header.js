@@ -1,5 +1,5 @@
 function lobby() {
-  window.location = "/";
+  window.location = "/KKUTU";
 }
 
 function Header() {
